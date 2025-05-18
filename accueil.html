@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déplace-Toi - Organisez vos trajets simplement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Radley&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            width: 140px;
+            height: 64px;
+            border-radius: 42px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: #b1a4ff;
+            text-decoration: underline;
+            font-size: 16px;
+            font-weight: 200;
+            line-height: 22px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+        
+        .login-button {
+            background-color: #4400ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 25px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-button:hover {
+            background-color: #3700d1;
+            transform: scale(1.05);
+        }
+        
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: 60px;
+            font-family: sans-serif;
+            font-weight: 700;
+            line-height: 96px;
+            color: #fdfdfd;
+            margin-bottom: 10px;
+            max-width: 821px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-title span {
+            color: #4400ff;
+            background: linear-gradient(to right, #4400ff, #4400ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .cta-button {
+            background-color: #4400ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 14px 45px;
+            font-size: 48px;
+            font-family: 'Radley', serif;
+            line-height: 61px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .cta-button:hover {
+            background-color: #3700d1;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 50px;
+                line-height: 75px;
+                max-width: 700px;
+            }
+            
+            .cta-button {
+                font-size: 40px;
+                line-height: 50px;
+                padding: 12px 35px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .nav-links {
+                margin: 20px 0;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+                line-height: 54px;
+                max-width: 100%;
+            }
+            
+            .cta-button {
+                font-size: 30px;
+                line-height: 40px;
+                padding: 10px 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+                line-height: 42px;
+            }
+            
+            .cta-button {
+                font-size: 24px;
+                line-height: 30px;
+                padding: 8px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <img src="C:\Users\21268\Downloads\voiture.jpeg" alt="Carte avec des voitures miniatures" class="background-image">
+        
+        <nav class="nav-container">
+            <img src="file:///C:/Users/21268/Downloads/logo.svg" alt="Déplace-Toi Logo" class="logo">
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link">Infos</a>
+                <a href="#" class="nav-link">Contact</a>
+                <a href="#" class="nav-link">Qui sommes-nous?</a>
+            </div>
+            
+            <button class="login-button">Se connecter</button>
+        </nav>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Organisez vos <span>trajets</span> simplement, où que vous <span>soyez</span></h1>
+            <button class="cta-button">Créer votre trajet ici</button>
+        </div>
+    </div>
+
+    <script>
+        // Login button functionality
+        document.querySelector('.login-button').addEventListener('click', function() {
+            alert('Redirection vers la page de connexion...');
+            // In a real application, this would redirect to a login page
+        });
+        
+        // CTA button functionality
+        document.querySelector('.cta-button').addEventListener('click', function() {
+            alert('Redirection vers la création de trajet...');
+            // In a real application, this would redirect to a route creation page
+        });
+        
+        // Navigation links functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`Navigation vers ${this.textContent}...`);
+                // In a real application, this would navigate to the respective page
+            });
+        });
+    </script>
+</body>
+</html>
