@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déplace-Toi - Organisez vos trajets simplement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Radley&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(232, 235, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1.5px solid rgb(77, 55, 248);
+            text-align: center;
+        }
+
+        .sidebar-title {
+            color: rgb(77, 55, 248);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: rgb(6, 6, 6);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgb(147, 149, 255);
+            border-left-color: rgb(0, 21, 255);
+            transform: translateX(5px);
+        }
+
+        .sidebar-item-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            fill: rgb(0, 0, 0);
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            color: rgba(0, 37, 244, 1);
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgb(255, 255, 255);
+            transform: scale(1.1);
+        }
+
+        .sidebar-toggle.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            width: 140px;
+            height: 64px;
+            border-radius: 42px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: #b1a4ff;
+            text-decoration: underline;
+            font-size: 16px;
+            font-weight: 200;
+            line-height: 22px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+        
+        .login-button {
+            background-color: #4400ff;
+            margin-right: 110px;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 25px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-button:hover {
+            background-color: #3700d1;
+            transform: scale(1.05);
+        }
+        
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: 60px;
+            font-family: sans-serif;
+            font-weight: 700;
+            line-height: 96px;
+            color: #fdfdfd;
+            margin-bottom: 10px;
+            max-width: 821px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-title span {
+            color: #4400ff;
+            background: linear-gradient(to right, #4400ff, #4400ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .cta-button {
+            background-color: #4400ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 14px 45px;
+            font-size: 48px;
+            font-family: 'Radley', serif;
+            line-height: 61px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .cta-button:hover {
+            background-color: #3700d1;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 50px;
+                line-height: 75px;
+                max-width: 700px;
+            }
+            
+            .cta-button {
+                font-size: 40px;
+                line-height: 50px;
+                padding: 12px 35px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .nav-links {
+                margin: 20px 0;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+                line-height: 54px;
+                max-width: 100%;
+            }
+            
+            .cta-button {
+                font-size: 30px;
+                line-height: 40px;
+                padding: 10px 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+                line-height: 42px;
+            }
+            
+            .cta-button {
+                font-size: 24px;
+                line-height: 30px;
+                padding: 8px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+     <!-- BOUTON POUR OUVRIR LA SIDEBAR -->
+    <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+
+    <!-- OVERLAY POUR FERMER LA SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" id="close-sidebar">×</button>
+        
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Menu</h2>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="#" class="sidebar-item" id="profile-link">
+                <svg class="sidebar-item-icon" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                Profile
+            </a>
+            
+            <a href="#" class="sidebar-item" id="history-link">
+                <svg class="sidebar-item-icon" viewBox="0 0 24 24">
+                    <path d="M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z"/>
+                </svg>
+                Historique
+            </a>
+            
+            <a href="#" class="sidebar-item" id="logout-link">
+                <svg class="sidebar-item-icon" viewBox="0 0 24 24">
+                    <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+                </svg>
+                Déconnexion
+            </a>
+        </div>
+    </div>
+    <div class="hero-container">
+        <img src="voiture.jpeg" alt="Carte avec des voitures miniatures" class="background-image">
+        
+        <nav class="nav-container">
+            <img src="logo.svg" alt="Déplace-Toi Logo" class="logo">
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link">Infos</a>
+                <a href="#" class="nav-link">Contact</a>
+                <a href="#" class="nav-link">Qui sommes-nous?</a>
+            </div>
+            
+            <a href="connexion.html"><button class="login-button">Se connecter</button></a>
+        </nav>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Organisez vos <span>trajets</span> simplement, où que vous <span>soyez</span></h1>
+            <a href="../Création de trajet/creation_trajet.html"><button class="cta-button" >Créer votre trajet ici</button></a>
+        </div>
+    </div>
+
+    <script>
+        // Navigation links functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`Navigation vers ${this.textContent}...`);
+                // In a real application, this would navigate to the respective page
+            });
+        });
+         // NOUVEAU SCRIPT POUR LA SIDEBAR
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const profileLink = document.getElementById('profile-link');
+            const historyLink = document.getElementById('history-link');
+            const logoutLink = document.getElementById('logout-link');
+
+            // Fonction pour ouvrir la sidebar
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('active');
+                sidebarToggle.classList.add('hidden'); // Cacher l'icône
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Fonction pour fermer la sidebar
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+                sidebarToggle.classList.remove('hidden'); // Réafficher l'icône
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners pour ouvrir/fermer la sidebar
+            sidebarToggle.addEventListener('click', openSidebar);
+            closeSidebar.addEventListener('click', closeSidebarFunc);
+            sidebarOverlay.addEventListener('click', closeSidebarFunc);
+
+            // Event listeners pour les options de la sidebar
+            profileLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Redirection vers la page Profile');
+                closeSidebarFunc();
+            });
+            historyLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Redirection vers la page Historique');
+                closeSidebarFunc();
+            });
+
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                    alert('Déconnexion réussie');
+                    closeSidebarFunc();
+                    // Ici vous pourriez rediriger vers la page de connexion
+                }
+            });
+
+            // Fermer la sidebar avec la touche Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                    closeSidebarFunc();
+                }
+            });
+ 
+        // Login button functionality
+        document.querySelector('.login-button').addEventListener('click', function() {
+            alert('Redirection vers la page de connexion...');
+            // In a real application, this would redirect to a login page
+        });
+        
+        // Navigation links functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`Navigation vers ${this.textContent}...`);
+                // In a real application, this would navigate to the respective page
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer votre trajet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* VOS STYLES EXISTANTS (inchangés) */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            position: relative;
+            background-image: url(voiture.jpeg);
+            background-size: cover;
+            width: 100%;
+            max-width: 1400px;
+            height: auto;
+            min-height: 100vh;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .title {
+            font-size: 44px;
+            font-family: 'Zen Old Mincho', serif;
+            font-weight: 700;
+            line-height: 73px;
+            text-align: center;
+            color: rgb(0, 37, 244);
+            margin-top: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background-color: rgb(0, 37, 244);
+        }
+        
+        .form-group {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 30px;
+           
+        }
+        
+
+        .input-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .input-field {
+            background-color:rgb(246, 240, 233) ;
+            width: 100%;
+            height: 60px;
+            border: 1.5px solid #447fb3ff;
+            border-radius: 41px;
+            padding: 0 0px 0 80px;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+            color: #000000ff;
+            outline: none;
+        }
+        
+        .input-field::placeholder {
+            color: #868686ff;
+        }
+        
+        .icon {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 26px;
+            height: 26px;
+        }
+        
+        .submit-btn {
+            background-color: rgb(68, 85, 179);
+            border: none;
+            border-radius: 14px;
+            width: 155px;
+            height: 57px;
+            font-size: 26px;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0496f7;
+            transform: scale(1.02);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 48px;
+                line-height: 70px;
+            }
+            
+            .form-label {
+                font-size: 28px;
+                line-height: 42px;
+            }
+            
+            .input-field {
+                height: 70px;
+                font-size: 24px;
+            }
+            
+            .submit-btn {
+                width: 280px;
+                height: 90px;
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 36px;
+                line-height: 54px;
+            }
+            
+            .form-label {
+                font-size: 24px;
+                line-height: 36px;
+            }
+            
+            .input-field {
+                height: 60px;
+                font-size: 20px;
+                padding-left: 60px;
+            }
+            
+            .icon {
+                width: 30px;
+                height: 30px;
+                left: 15px;
+            }
+            
+            .submit-btn {
+                width: 220px;
+                height: 70px;
+                font-size: 28px;
+            }
+        }
+
+        /* NOUVEAUX STYLES POUR LA SIDEBAR */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(232, 235, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1.5px solid rgb(77, 55, 248);
+            text-align: center;
+        }
+
+        .sidebar-title {
+            color: rgb(77, 55, 248);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: rgb(6, 6, 6);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgb(147, 149, 255);
+            border-left-color: rgb(0, 21, 255);
+            transform: translateX(5px);
+        }
+
+        .sidebar-item-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            fill: rgb(0, 0, 0);
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            color: rgba(0, 37, 244, 1);
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgb(255, 255, 255);
+            transform: scale(1.1);
+        }
+
+        .sidebar-toggle.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+            }
+            
+            .sidebar-toggle {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- BOUTON POUR OUVRIR LA SIDEBAR -->
+    <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+
+    <!-- OVERLAY POUR FERMER LA SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" id="close-sidebar">×</button>
+        
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Menu</h2>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="#" class="sidebar-item" id="profile-link">
+                <svg class="sidebar-item-icon" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                Profile
+            </a>
+            
+            <a href="#" class="sidebar-item" id="history-link">
+                <svg class="sidebar-item-icon" viewBox="0 0 24 24">
+                    <path d="M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z"/>
+                </svg>
+                Historique
+            </a>
+            
+            <a href="#" class="sidebar-item" id="logout-link">
+                <svg class="sidebar-item-icon" viewBox="0 0 24 24">
+                    <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+                </svg>
+                Déconnexion
+            </a>
+        </div>
+    </div>
+
+    <div class="container">  
+        <h1 class="title">Créer votre trajet</h1>
+        <form id="journey-form">
+            <div class="form-group">
+               
+                <div class="input-container">
+                    <img src="seo_icons_line-26-512%201.svg" alt="Location icon" class="icon">
+                    <input type="text" id="departure" class="input-field" placeholder="point de départ" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+      
+                <div class="input-container">
+                    <img src="seo_icons_line-26-512%201.svg" alt="Location icon" class="icon">
+                    <input type="text" id="destination" class="input-field" placeholder="Destination" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+               
+                <div class="input-container">
+                    <img src="seo_icons_line-26-512%201%20(1).svg" alt="Calendar icon" class="icon">
+                    <input type="text" id="date" class="input-field" placeholder="JJ/MM/AAAA" value="05/05/2025" required>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="submit" class="submit-btn" id="submit-btn">Valider</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- VOTRE SCRIPT EXISTANT (inchangé) -->
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const journeyForm = document.getElementById('journey-form');
+    const departureInput = document.getElementById('departure');
+    const destinationInput = document.getElementById('destination');
+    const dateInput = document.getElementById('date');
+
+    // Gestion du champ date
+    dateInput.addEventListener('focus', function () {
+        this.type = 'date';
+        this.placeholder = '';
+        if (this.value.includes('/')) {
+            const parts = this.value.split('/');
+            this.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+    });
+
+    dateInput.addEventListener('blur', function () {
+        if (!this.value) {
+            this.type = 'text';
+            this.placeholder = 'JJ/MM/AAAA';
+        } else {
+            const date = new Date(this.value);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            this.type = 'text';
+            this.value = `${day}/${month}/${year}`;
+        }
+    });
+
+    journeyForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const departure = departureInput.value.trim();
+        const destination = destinationInput.value.trim();
+        const date = dateInput.value.trim();
+
+        if (!departure) {
+            alert('Veuillez entrer un point de départ');
+            return;
+        }
+
+        if (!destination) {
+            alert('Veuillez entrer une destination');
+            return;
+        }
+
+        if (!date) {
+            alert('Veuillez sélectionner une date de départ');
+            return;
+        }
+
+        // Stockage dans localStorage
+        localStorage.setItem('journeyData', JSON.stringify({
+            departure,
+            destination,
+            date
+        }));
+
+        // Redirection vers la page suivante
+        window.location.href = '../visualisation_trajet.html';
+    });
+
+    // Sidebar + autres fonctionnalités (inchangées)
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const closeSidebar = document.getElementById('close-sidebar');
+    const profileLink = document.getElementById('profile-link');
+    const historyLink = document.getElementById('history-link');
+    const logoutLink = document.getElementById('logout-link');
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        sidebarOverlay.classList.add('active');
+        sidebarToggle.classList.add('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebarFunc() {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+        sidebarToggle.classList.remove('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    sidebarToggle.addEventListener('click', openSidebar);
+    closeSidebar.addEventListener('click', closeSidebarFunc);
+    sidebarOverlay.addEventListener('click', closeSidebarFunc);
+    profileLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        alert('Redirection vers la page Profile');
+        closeSidebarFunc();
+    });
+    historyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        alert('Redirection vers la page Historique');
+        closeSidebarFunc();
+    });
+    logoutLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+            alert('Déconnexion réussie');
+            closeSidebarFunc();
+        }
+    });
+    document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                closeSidebarFunc();
+            }
+    });
+});
+    </script>
+</body>
+</html>

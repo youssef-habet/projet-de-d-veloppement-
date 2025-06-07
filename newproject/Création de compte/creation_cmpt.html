@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #447fb3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            position: relative;
+            width: 1400px;
+            height: 865px;
+            overflow: hidden;
+        }
+        
+        .white-panel {
+            position: absolute;
+            top: 0;
+            right:0;
+            width: 908px;
+            height: 1024px;
+            background-color: white;
+            border-radius: 28px 0px 0px 28px;
+            z-index: 1;
+        }
+        /* Sidebar Styles */
+        .road-image {
+            position: absolute;
+            left: 0;
+            top: 90px;
+            width: 340px;
+            height: 575px;
+            z-index: 2;
+        }
+            
+        .signup-form {
+            position: absolute;
+            top: 80px;
+            right: 100px;
+            width: 620px;
+            z-index: 2;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 72px;
+            text-align: center;
+            color: #000000;
+            margin-bottom: 40px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 16px;
+            border: 1px solid #a5a5a5;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .social-btn img {
+            margin-right: 10px;
+            margin-left: 0px;
+            width: 40px;
+
+        }
+        
+        .social-btn span {
+            font-size: 20px;
+            color: #b2b2b2;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #b2b2b2;
+            font-size: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+           
+        }
+             
+        .form-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #b2b2b2;
+            padding: 10px 0;
+            font-size: 18px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            color:#353535 ;
+        }
+        .form-group input::placeholder {
+            color:#b2b2b2; /* Change to any color */
+            opacity: 1; /* Make sure it's fully visible */
+        }
+
+        
+        .form-group input:focus {
+            border-color: #447fb3;
+        }
+        
+        .password-container {
+            position: relative;
+            text-align: right;
+        }
+        
+        .forgot-password {
+            right: 10px;
+            top: 4px;
+            font-size: 15px;
+            color: #b7b7b7;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #447fb3;
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 14px;
+            font-size: 28px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0088ff;
+        }
+        
+        .login-link {
+            text-align: right;
+        }
+        
+        .login-link a {
+            color: #9a2d2d;
+            text-decoration: underline;
+            font-size: 15px;
+        }
+        
+        .login-link a:hover {
+            color: #7a2323;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                width: 100%;
+                height: auto;
+            }
+            
+            .white-panel {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-radius: 28px 28px 0 0;
+                padding: 20px;
+            }
+            
+            .road-image {
+                display: none;
+            }
+            
+            .location-marker {
+                display: none;
+            }
+            
+            .signup-form {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="white-panel"></div>
+        <img src="road.png" alt="Road with markers" class="road-image">
+        
+        <!-- Location markers -->
+        <div class="signup-form">
+            <h1>Créer un compte</h1>
+            
+            <div class="social-buttons">
+                <button class="social-btn google-btn">
+                    <img src="Google.svg" alt="Google logo" width="25" height="25">
+                    <span>s'inscrire avec google</span>
+                </button>
+                
+                <button class="social-btn facebook-btn">
+                    <img src="Facebook.svg" alt="Facebook logo" width="33" height="33">
+                    <span>s'inscrire avec Facebook</span>
+                </button>
+            </div>
+            
+            <div class="divider">-OU-</div>
+            
+            <form id="signup-form">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Nom & Prénom" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Adress email" required>
+                </div>
+                
+                <div class="form-group">
+                    <div class="password-container">
+                        <input type="password" id="password" placeholder="Mot de passe" required>
+                       
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submit-btn">créer un compte</button>
+                
+                <div class="login-link">
+                    <a href="page de connexion (déjà un compte.html">avez-vous déjà un compte ?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    document.getElementById('submit-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert("Compte créé avec succès!")
+    window.location.href = '../Accueil/accueil.html';
+    });
+      
+    //Hadxi li dert ana 
+    const form = document.getElementById('signup-form');
+
+    form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nom = document.getElementById('nom').value;
+    const email = document.getElementById('email').value;
+    const mot_de_passe = document.getElementById('mot_de_passe').value;
+
+    try {
+      const response = await fetch('http://localhost:3000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom, email, mot_de_passe })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erreur inconnue');
+      }
+
+      document.getElementById('message').innerText = data.message;
+      document.getElementById('message').style.color = 'green';
+    } catch (err) {
+      document.getElementById('message').innerText = 'Erreur : ' + err.message;
+      document.getElementById('message').style.color = 'red';
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>
